@@ -16,6 +16,24 @@ export class App extends React.Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const newContacts = this.state.contacts;
+    const prevContacts = prevState.contacts;
+
+    if (newContacts !== prevContacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   // Додається контакт у список
   addContact = ({ name, number }) => {
     const normalizedFind = name.toLowerCase();
